@@ -1,0 +1,160 @@
+
+
+#include <iostream>
+#include <windows.h>
+#include <stdlib.h>
+
+#define GRUEN           0x0002
+#define ROT             0x0004
+#define NORMAL          0x0007
+#define HELLBLAU        0x0009
+
+using namespace std;
+
+// Globale Variablen zum Speichern der Parkplaetze
+int i_parkplatz1 = 0; // frei
+int i_parkplatz2 = 0; // frei
+int i_parkplatz3 = 2; // reserviert
+int i_parkplatz4 = 0; // frei
+
+
+int Lkw_P[50] = { 0,1,0,1,0,2 }; //Belegung von Parkplatz 2 und 4, Reservierung von Parkplatz 6 und Status frei für alle übrigen Parkplätze.
+
+
+void Statusuebersicht(); //Funktion zur Ausgabe aller Parkplätze, Belegungsstatus 
+void Farbe(WORD color);  //Funktion zum Setzen der Ausgabefarben des Textes
+void Parkplatzbelegung();//Funktion zur Abfrage und Belegung eines Parkplatzes
+
+// main Funktion, in der die Parkplatzverwaltung organisiert wird
+int main()
+{
+
+	Farbe(NORMAL);
+
+	cout << endl << "Notification:" << endl; //Ausgabe initial zur korrekten Formatierung.
+
+
+	while (1) // Endlosschleife um die Parkplatzverwaltung dauerhaft laufen zu lassen
+	{
+		Statusuebersicht(); // Ausgabe des Status der Parkplätze
+		Parkplatzbelegung(); // Belegung eines Parkplatzes
+	}
+	return 0;
+}
+
+
+//Funktion zum Setzen der Ausgabefarben des Textes
+void Farbe(WORD color)
+{
+	SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+
+// Gibt den Status eines Parkplatzes aus
+void Statusuebersicht()
+{
+	int zeilenumbruch = 0;
+
+	cout << "LKW-Parkplatzstatus:" << endl << endl;
+	for (int i = 0; i <= 49; i++)
+	{
+		if (Lkw_P[i] == 1)
+		{
+			Farbe(ROT);
+			cout << "Platz " << i + 1 << " ist belegt      ";
+			zeilenumbruch++;
+
+		}
+		else
+		{
+			if (Lkw_P[i] == 2)
+			{
+				Farbe(HELLBLAU);
+				cout << "Platz " << i + 1 << " ist reserviert    ";
+				zeilenumbruch++;
+
+			}
+			else
+			{
+				Farbe(GRUEN);
+				cout << "Platz " << i + 1 << " ist frei       ";
+				zeilenumbruch++;
+			}
+
+		}
+		if (zeilenumbruch % 3 == 0) //somit werden nur 3 Parklätze der Ubersichtlichkeit halber nebeneinander angezeigt.
+		{
+			cout << endl;
+		}
+
+		Farbe(NORMAL);
+
+	}
+
+}
+
+
+void Parkplatzbelegung() //Funktion zur Parkplatz-Abfrage und Belegung. 
+
+{
+	// Variable zur Auswahl der Parkplaetze
+	int i_parkplatz_auswahl = 0;
+	// Parkplatzbelegung
+	cout << "Welchen Parkplatz wollen Sie belegen?" << endl;
+	cin >> i_parkplatz_auswahl;
+
+
+	// Je nach Benutzerauswahl wird eine andere Variable modifiziert
+	switch (i_parkplatz_auswahl)
+	{
+	case 1:
+		// Ein Parkplatz kann nur gebucht werden, wenn er frei ist.
+		if (i_parkplatz1 == 0)
+		{
+			cout << "Sie haben Parkplatz 1 gebucht" << endl;
+			i_parkplatz1 = 1;
+		}
+		else
+		{
+			cout << "Parkplatz 1 kann nicht gebucht werden" << endl;
+		}
+		break;
+	case 2:
+		// Ein Parkplatz kann nur gebucht werden, wenn er frei ist.
+		if (i_parkplatz2 == 0)
+		{
+			cout << "Sie haben Parkplatz 2 gebucht" << endl;
+			i_parkplatz2 = 1;
+		}
+		else
+		{
+			cout << "Parkplatz 2 kann nicht gebucht werden" << endl;
+		}
+		break;
+	case 3:
+		// Ein Parkplatz kann nur gebucht werden, wenn er frei ist.
+		if (i_parkplatz3 == 0)
+		{
+			cout << "Sie haben Parkplatz 3 gebucht" << endl;
+			i_parkplatz3 = 1;
+		}
+		else
+		{
+			cout << "Parkplatz 3 kann nicht gebucht werden" << endl;
+		}
+		break;
+	case 4:
+		// Ein Parkplatz kann nur gebucht werden, wenn er frei ist.
+		if (i_parkplatz4 == 0)
+		{
+			cout << "Sie haben Parkplatz 4 gebucht" << endl;
+			i_parkplatz4 = 1;
+		}
+		else
+		{
+			cout << "Parkplatz 4 kann nicht gebucht werden" << endl;
+		}
+		break;
+	}
+
+}
